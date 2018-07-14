@@ -97,6 +97,34 @@ function displayBooks(object) {
   rightSide[0].innerHTML = dataOfRightBooks;
 }
 
+//Изменение столбика книги при нажатие на кнопку
+function changeBookSide() {
+  content.onclick = function(element) {
+    if (isSearch) {
+      //Перемещение блоков, если был произведен поиск
+      let booksData = JSON.parse(localStorage.getItem("searchData"));
+      booksData[element.target.id].label = !booksData[element.target.id].label;
+
+      localStorage.setItem("searchData", JSON.stringify(booksData));
+
+      //Вывод на экран
+      leftSideQuantity = rightSideQuantity = 0; //Обнуляем счетчики
+      displayBooks(booksData);
+      displayBooksQuantity();
+    } else {
+      //Стандартное перемещение блоков
+      booksData[element.target.id].label = !booksData[element.target.id].label;
+      setDataToLocalStorage();
+
+      //Вывод на экран
+      leftSideQuantity = rightSideQuantity = 0; //Обнуляем счетчики
+      displayBooks(booksData);
+      displayBooksQuantity();
+    }
+    console.log(isSearch);
+  };
+}
+
 //Добавление данных в localStorage
 function setDataToLocalStorage() {
   let booksDataToLocalStorage = JSON.stringify(booksData);
@@ -111,6 +139,38 @@ function getDataFromLocalStorage() {
   booksData = JSON.parse(booksData);
 
   return booksData;
+}
+
+//Поиск даных про книгу по всем книгам, согласно запросу
+function searchDataBooksByAuthor(searchPhrase) {
+  let resultData = {};
+  for (let key in booksData) {
+    if (booksData.hasOwnProperty(key)) {
+      //регистронезависимый поиск
+      searchPhrase = searchPhrase.toLowerCase();
+      let author = booksData[key].author.toLowerCase();
+
+      if (author.indexOf(searchPhrase) != -1) {
+        resultData[key] = booksData[key];
+      }
+    }
+  }
+  return resultData;
+}
+
+//Находим поисковый запрос и вызываем функцию поиска.
+//Вывод отфильтрованых данных на экран
+function startSearch() {
+  search.oninput = function() {
+    let booksData = searchDataBooksByAuthor(search.value);
+
+    isSearch = true;
+    localStorage.setItem("searchData", JSON.stringify(booksData));
+
+    rightSideQuantity = leftSideQuantity = 0;
+    displayBooks(booksData);
+    displayBooksQuantity();
+  };
 }
 
 //Вывод количества книг по полям
@@ -137,3 +197,9 @@ displayBooks(booksData);
 
 //количество книг
 displayBooksQuantity();
+
+//Изменение столбика книги
+changeBookSide();
+
+//Ищем книги по введеному запросу
+startSearch();
