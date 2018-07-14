@@ -1,12 +1,25 @@
-//Объект для одной записи с книгой
-let bookItem = {
-  id: null,
-  author: undefined,
-  name: undefined,
-  img: undefined
-};
+"use strict";
+//Функция парсинга информации про книги с *.json файла
+function parseBooksFromJson(fileName) {
+  let xhr = new XMLHttpRequest();
 
-//Парсим файл *.json
-let a = JSON.parse("data.json");
+  xhr.open("GET", fileName, false);
 
-alert("lol");
+  xhr.send();
+
+  if (xhr.status != 200) {
+    return xhr.status + ":" + xhr.statusText;
+  } else {
+    return addBookLabel(JSON.parse(xhr.responseText));
+  }
+}
+
+//Функция добавление метки поля (левое-true/правое-false) для каждого объекта книги
+function addBookLabel(object) {
+  for (let key in object) {
+    if (object.hasOwnProperty(key)) {
+      object[key].label = true;
+    }
+  }
+  return object;
+}

@@ -18,6 +18,7 @@ div {
 	flex-wrap: wrap;
 }
 
+
 .left {
 	overflow-y: auto;
 	border: 2px solid green;
