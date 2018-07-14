@@ -97,6 +97,22 @@ function displayBooks(object) {
   rightSide[0].innerHTML = dataOfRightBooks;
 }
 
+//Добавление данных в localStorage
+function setDataToLocalStorage() {
+  let booksDataToLocalStorage = JSON.stringify(booksData);
+
+  localStorage.setItem("booksData", booksDataToLocalStorage);
+}
+
+//Получение данных из localStorage
+function getDataFromLocalStorage() {
+  let booksData = localStorage.getItem("booksData");
+
+  booksData = JSON.parse(booksData);
+
+  return booksData;
+}
+
 //Все книги (ПОдтягиваем или с localStorage или с файла)
 let booksData = getDataFromLocalStorage()
   ? getDataFromLocalStorage()
