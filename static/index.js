@@ -113,6 +113,14 @@ function getDataFromLocalStorage() {
   return booksData;
 }
 
+//Вывод количества книг по полям
+function displayBooksQuantity() {
+  document.getElementsByClassName("left")[1].innerHTML =
+    "Количество: " + leftSideQuantity;
+  document.getElementsByClassName("right")[1].innerHTML =
+    "Количество: " + rightSideQuantity;
+}
+
 //Все книги (ПОдтягиваем или с localStorage или с файла)
 let booksData = getDataFromLocalStorage()
   ? getDataFromLocalStorage()
@@ -122,5 +130,10 @@ let booksData = getDataFromLocalStorage()
 let leftSideQuantity = 0;
 let rightSideQuantity = 0;
 
+let isSearch = false;
+
 //вывод спиcков книг на экран
 displayBooks(booksData);
+
+//количество книг
+displayBooksQuantity();
