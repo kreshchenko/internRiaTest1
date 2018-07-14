@@ -23,3 +23,88 @@ function addBookLabel(object) {
   }
   return object;
 }
+
+//Функция отрисовки объектов книг на экране
+//object - объект с объектами для отрисовки
+function displayBooks(object) {
+  let leftSide = document.getElementsByClassName("left");
+  let rightSide = document.getElementsByClassName("right");
+
+  let dataOfLeftBooks = ""; //Перемення для хранения вида книг слева
+  let dataOfRightBooks = ""; //Переменная для хранения вида книг справа
+
+  for (let key in object) {
+    if (object[key].label == true) {
+      dataOfLeftBooks +=
+        ` <div class="item">
+                              <div class="pic">
+                                <span>
+                                  <img src="` +
+        object[key].img +
+        `">
+                                </span>
+                              </div>
+                              <div class="title">
+                                <span>
+                                  <b>Название</b>: "` +
+        object[key].name +
+        `"
+                                </span>
+                                <span>
+                                  <b>Автор</b>: ` +
+        object[key].author +
+        `
+                                </span>
+                              </div>
+                              <div class="after" id="` +
+        key +
+        `">
+                              </div>
+                          </div>`;
+      leftSideQuantity++; //Считаем количество в левом столбце
+    } else {
+      dataOfRightBooks +=
+        ` <div class="item">
+                              <div class="pic">
+                                <span>
+                                  <img src="` +
+        object[key].img +
+        `">
+                                </span>
+                              </div>
+                              <div class="title">
+                                <span>
+                                  <b>Название</b>: "` +
+        object[key].name +
+        `"
+                                </span>
+                                <span>
+                                  <b>Автор</b>: ` +
+        object[key].author +
+        `
+                                </span>
+                              </div>
+                              <div class="before" id="` +
+        key +
+        `">
+                              </div>
+                          </div>`;
+      rightSideQuantity++; //Считаем количество в правом стобце
+    }
+  }
+
+  leftSide[0].innerHTML = dataOfLeftBooks;
+  rightSide[0].innerHTML = dataOfRightBooks;
+}
+
+//Все книги (ПОдтягиваем или с localStorage или с файла)
+let booksData = getDataFromLocalStorage()
+  ? getDataFromLocalStorage()
+  : parseBooksFromJson("/static/data.json");
+
+//Счетчики для количества книг
+let leftSideQuantity = 0;
+let rightSideQuantity = 0;
+
+//вывод спиcков книг на экран
+displayBooks(booksData);
